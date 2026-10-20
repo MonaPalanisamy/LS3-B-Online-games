@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ழ ள ல Tamil Letter Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@500;700;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff6e0;--card:#ffffff;--ink:#2b2140;--mute:#6d6485;--a:#ff5d73;--b:#18b5a3;--c:#ffb100;--ok:#16a34a;--bad:#e11d48;--line:#2b2140;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1630;--card:#2a2145;--ink:#fff3d6;--mute:#b5a9d4;--line:#fff3d6}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:560px;padding:18px 16px 40px}
+h1,.ta{font-family:'Baloo Thambi 2','Noto Sans Tamil',sans-serif}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;margin-bottom:10px}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 12px;box-shadow:0 3px 0 var(--line)}
+.bar{height:10px;background:var(--card);border:2px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--c));transition:width .4s}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;box-shadow:0 6px 0 var(--line);padding:20px}
+.hero{text-align:center}
+.hero h1{font-size:44px;margin:4px 0;line-height:1.1}
+.trio{font-size:78px;font-weight:800;display:flex;justify-content:center;gap:14px;margin:6px 0}
+.trio span:nth-child(1){color:var(--a)}.trio span:nth-child(2){color:var(--b)}.trio span:nth-child(3){color:var(--c)}
+.tip{background:var(--bg);border-radius:14px;padding:10px 12px;text-align:left;font-size:14px;margin:14px 0}
+.tip b{font-size:16px}
+.btn{font:inherit;font-weight:800;font-size:18px;cursor:pointer;color:#fff;background:var(--a);border:3px solid var(--line);border-radius:16px;padding:12px 22px;box-shadow:0 5px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}
+.btn:focus-visible,.opt:focus-visible,.mt:focus-visible{outline:4px solid var(--c);outline-offset:2px}
+.rname{font-weight:800;color:var(--mute);font-size:14px}
+.q{font-size:22px;font-weight:800;margin:6px 0 4px}
+.q .ta{font-size:34px;display:block;margin-top:2px;letter-spacing:2px}
+.hint{color:var(--mute);font-size:14px;min-height:20px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.opt,.mt{font-family:'Baloo Thambi 2','Noto Sans Tamil',sans-serif;font-weight:700;font-size:26px;cursor:pointer;background:var(--bg);color:var(--ink);border:3px solid var(--line);border-radius:16px;padding:12px 6px;box-shadow:0 4px 0 var(--line);transition:transform .08s}
+.opt:active,.mt:active{transform:translateY(3px)}
+.opt.ok,.mt.done{background:var(--ok);color:#fff;animation:pop .35s}
+.opt.bad{background:var(--bad);color:#fff;animation:shake .3s}
+.opt:disabled{cursor:default}
+.fb{margin-top:16px;font-weight:800;min-height:48px}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mt{font-size:22px;padding:10px 4px}
+.mt.en{font-family:'Nunito',sans-serif;font-size:17px}
+.mt.sel{background:var(--c);color:#2b2140}
+.mt.done{pointer-events:none;opacity:.75}
+.mt.wrong{animation:shake .3s;background:var(--bad);color:#fff}
+.lives{letter-spacing:2px}
+.end{text-align:center}.end .big{font-size:64px;font-weight:800}
+.stars{font-size:44px}
+.badge{display:inline-block;margin:4px;padding:6px 12px;border-radius:999px;background:var(--bg);border:2px solid var(--line);font-weight:800;font-size:14px}
+@keyframes pop{50%{transform:scale(1.08)}}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app" id="app"></main>
+<script>
+const R=[
+{name:"Round 1 · Pick the word",type:"mc",items:[
+["Morning","காலை","காளை"],["Parrot","கிளி","கிழி"],["Bull","காளை","காலை"],["Hole / Pit","குழி","குளி"],["Bathe","குளி","குழி"],["Tear (rip)","கிழி","கிளி"]]},
+{name:"Round 2 · Match up",type:"match",pairs:[["குழந்தை","Child"],["கோழி","Chicken"],["குளிர்","Cold"],["கல்","Stone"],["தலை","Head"]]},
+{name:"Round 3 · Missing letter",type:"fill",items:[
+["Write","எ_து","ழு",["ழு","ளு","லு"],"எழுது"],["Tomato","தக்கா_","ளி",["ழி","ளி","லி"],"தக்காளி"],["Mouse","எ_","லி",["ழி","ளி","லி"],"எலி"],["Wave","அ_","லை",["ழை","ளை","லை"],"அலை"],["Listen","கே_","ள்",["ழ்","ள்","ல்"],"கேள்"],["Eagle","க_கு","ழு",["ழு","ளு","லு"],"கழுகு"]]},
+{name:"Round 4 · Word meaning",type:"mean",items:[
+["ஏழு","Seven",["Seven","Eight","Rise","Tear"]],["Erase","அழி",["அழி","அலி","அளி","அலை"]],["உள்ளே","Inside",["Inside","Outside","Below","Above"]],["Branch","கிளை",["கிளை","கிழை","கிலை","களை"]],["கால்","Leg / Foot",["Leg / Foot","Hand","Head","Ear"]],["Voice","குரல்",["குரல்","குரள்","குறல்","குழல்"]],["சிலை","Statue",["Statue","Stone","Hill","Rope"]],["Slippery","வழுவழு",["வழுவழு","வளுவளு","வலுவலு","வழிவழி"]]]}
+];
+const TIPS=[["ல","tongue tip touches the front teeth","ள","tongue tip curls back to the roof","ழ","tongue curls back, soft unique sound"]];
+const app=document.getElementById('app');
+let S;
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+const tamil=s=>/[\u0B80-\u0BFF]/.test(s);
+function start(){S={r:0,i:0,score:0,lives:5,streak:0,best:0,right:0,total:0,qs:null};home()}
+function home(){
+app.innerHTML=`<div class="card hero"><div class="rname">Tamil letter game</div><h1 class="ta">ழ · ள · ல</h1>
+<div class="trio ta"><span>ழ</span><span>ள</span><span>ல</span></div>
+<p style="font-weight:800;margin:0">One letter changes the whole word. Can you hear the difference?</p>
+<div class="tip"><b class="ta">ல</b> tongue tip touches the front teeth<br><b class="ta">ள</b> tongue tip curls back to the roof of the mouth<br><b class="ta">ழ</b> tongue curls back and makes a soft, unique sound</div>
+<button class="btn" id="go">Start the quest</button></div>`;
+document.getElementById('go').onclick=()=>{S.r=0;S.i=0;round()}}
+function head(){const tot=R.length;return `<div class="top"><span class="pill">★ ${S.score}</span><span class="pill">🔥 ${S.streak}</span><span class="pill lives">${'❤'.repeat(S.lives)}${'♡'.repeat(5-S.lives)}</span></div><div class="bar"><i style="width:${(S.r/tot)*100}%"></i></div>`}
+function round(){
+if(S.r>=R.length||S.lives<=0)return end();
+const r=R[S.r];S.i=0;
+if(r.type==="match")return matchRound(r);
+S.qs=r.items;question()}
+function question(){
+const r=R[S.r];
+if(S.i>=S.qs.length){S.r++;return round()}
+const it=S.qs[S.i];let q,opts,ans;
+if(r.type==="mc"){q=`Which word means “${it[0]}”?`;opts=sh([it[1],it[2]]);ans=it[1]}
+else if(r.type==="fill"){q=`${it[0]}: fill the gap`;opts=sh(it[3]);ans=it[2];var big=it[1]}
+else{const t=tamil(it[0]);q=t?`What does this mean?`:`Which Tamil word means “${it[0]}”?`;if(t)var big=it[0];opts=sh(it[2]);ans=it[1]}
+app.innerHTML=head()+`<div class="card"><div class="rname">${r.name} · ${S.i+1}/${S.qs.length}</div><div class="q">${q}${big?`<span class="ta">${big}</span>`:''}</div><div class="hint"></div>
+<div class="opts">${opts.map(o=>`<button class="opt ${tamil(o)?'':'en'}" style="${tamil(o)?'':'font-family:Nunito;font-size:19px'}">${o}</button>`).join('')}</div><div class="fb"></div></div>`;
+const bs=[...app.querySelectorAll('.opt')];
+bs.forEach(b=>b.onclick=()=>answer(b,bs,ans,r.type==="fill"?it[4]:null))}
+function answer(b,bs,ans,full){
+S.total++;const fb=app.querySelector('.fb');
+if(b.textContent===ans){
+b.classList.add('ok');bs.forEach(x=>x.disabled=true);S.streak++;S.best=Math.max(S.best,S.streak);S.right++;
+const g=10+Math.min(S.streak-1,5)*2;S.score+=g;
+fb.className='fb ok';fb.innerHTML=`Yes! +${g}${full?` <span class="ta" style="font-size:22px">${full}</span>`:''} <button class="btn" style="font-size:15px;padding:6px 14px;margin-left:8px" id="nx">Next</button>`;
+document.getElementById('nx').focus();document.getElementById('nx').onclick=()=>{S.i++;question()}}
+else{
+b.classList.add('bad');b.disabled=true;S.streak=0;S.lives--;
+fb.className='fb bad';fb.textContent='Not that one. Try again.';
+document.querySelector('.top .lives').textContent='❤'.repeat(S.lives)+'♡'.repeat(5-S.lives);
+if(S.lives<=0)setTimeout(end,700)}}
+function matchRound(r){
+const L=sh(r.pairs.map(p=>p[0])),E=sh(r.pairs.map(p=>p[1]));
+const map=Object.fromEntries(r.pairs);let sel=null,done=0;
+app.innerHTML=head()+`<div class="card"><div class="rname">${r.name}</div><div class="q">Tap a Tamil word, then its English meaning</div><div class="match">
+<div style="display:grid;gap:10px">${L.map(x=>`<button class="mt" data-t="${x}">${x}</button>`).join('')}</div>
+<div style="display:grid;gap:10px">${E.map(x=>`<button class="mt en" data-e="${x}">${x}</button>`).join('')}</div></div><div class="fb"></div></div>`;
+const fb=app.querySelector('.fb');
+app.querySelectorAll('.mt').forEach(b=>b.onclick=()=>{
+if(b.dataset.t){app.querySelectorAll('[data-t]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b;return}
+if(!sel){fb.className='fb';fb.textContent='Pick a Tamil word first.';return}
+S.total++;
+if(map[sel.dataset.t]===b.dataset.e){sel.classList.remove('sel');sel.classList.add('done');b.classList.add('done');sel=null;S.streak++;S.best=Math.max(S.best,S.streak);S.right++;S.score+=10;done++;
+fb.className='fb ok';fb.textContent='Match!';
+document.querySelector('.top .pill').textContent='★ '+S.score;
+if(done===r.pairs.length){fb.innerHTML=`All matched! <button class="btn" style="font-size:15px;padding:6px 14px;margin-left:8px" id="nx">Next round</button>`;document.getElementById('nx').onclick=()=>{S.r++;round()}}}
+else{b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),350);S.streak=0;S.lives--;fb.className='fb bad';fb.textContent='Not a match.';
+document.querySelector('.top .lives').textContent='❤'.repeat(S.lives)+'♡'.repeat(5-S.lives);
+if(S.lives<=0)setTimeout(end,700)}})}
+function end(){
+const won=S.r>=R.length&&S.lives>0;const pct=S.total?Math.round(S.right/S.total*100):0;
+const st=!won?1:pct>=85?3:pct>=60?2:1;
+app.innerHTML=`<div class="card end"><div class="rname">${won?'Quest complete':'Out of hearts'}</div><div class="stars">${'⭐'.repeat(st)}${'☆'.repeat(3-st)}</div>
+<div class="big">${S.score}</div><div style="font-weight:800">points</div>
+<p><span class="badge">Accuracy ${pct}%</span><span class="badge">Best streak ${S.best}</span><span class="badge">Hearts left ${S.lives}</span></p>
+<p style="color:var(--mute)">${won?(st===3?'You can hear every ழ, ள and ல!':'Nice work. Replay to sharpen the tricky pairs.'):'The letters are tricky. Try again, and listen for where the tongue goes.'}</p>
+<button class="btn" id="again">Play again</button></div>`;
+document.getElementById('again').onclick=start}
+start();
+</script>
+</body>
+</html>
